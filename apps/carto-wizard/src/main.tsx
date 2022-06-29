@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { PopupProvider } from 'react-hook-popup';
+import { RecoilRoot } from 'recoil';
 
 import App from './app/app';
 
@@ -9,8 +10,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StrictMode>
-    <PopupProvider>
-      <App />
-    </PopupProvider>
+    <RecoilRoot>
+      <PopupProvider>
+        <App />
+      </PopupProvider>
+    </RecoilRoot>
   </StrictMode>
 );
