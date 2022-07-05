@@ -27,7 +27,7 @@ const Backdrop = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 2rem 4rem;
   background-color: #444444;
   border-radius: 4rem 0;
   box-shadow: 1rem 1rem 3rem #000, -1rem 1rem 3rem #000;

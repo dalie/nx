@@ -1,4 +1,6 @@
 import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import Button from '../button/button';
 import Modal from '../modal/modal';
 import { uiState } from '../ui/ui.state';
 
@@ -17,9 +19,18 @@ export function Start(props: StartProps) {
 
   return (
     <Modal>
-      <button onClick={onBtn}>Start</button>
+      <StyledDiv>
+        <h1>CartoWizard</h1>
+        <Button onClick={onBtn}>Start</Button>
+      </StyledDiv>
     </Modal>
   );
 }
 
 export default Start;
+
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
