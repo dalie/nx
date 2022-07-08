@@ -2,10 +2,11 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import Button from '../button/button';
 import Modal from '../modal/modal';
+import { PropsWithTransition } from '../ui/props-with-transition';
 import { uiState } from '../ui/ui.state';
 
 /* eslint-disable-next-line */
-export interface StartProps {}
+export interface StartProps extends PropsWithTransition {}
 
 export function Start(props: StartProps) {
   const [ui, setUi] = useRecoilState(uiState);
@@ -18,7 +19,7 @@ export function Start(props: StartProps) {
   };
 
   return (
-    <Modal>
+    <Modal {...props}>
       <StyledDiv>
         <h1>CartoWizard</h1>
         <Button onClick={onBtn}>Start</Button>

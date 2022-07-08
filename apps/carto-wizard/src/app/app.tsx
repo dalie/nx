@@ -1,5 +1,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { Transition } from 'react-transition-group';
 import { useRecoilState } from 'recoil';
+import { ANIMATION_DELAY } from './contants';
 import Map from './map/map';
 import Start from './start/start';
 import Toolbar from './toolbar/toolbar';
@@ -12,8 +14,12 @@ export function App() {
     <>
       <Map />
       <Ui>
-        {ui.start && <Start />}
-        {ui.toolbar && <Toolbar />}
+        <Transition in={ui.start} timeout={ANIMATION_DELAY}>
+          {(state) => state !== 'exited' && <Start transition={state} />}
+        </Transition>
+        <Transition in={ui.toolbar} timeout={ANIMATION_DELAY}>
+          {(state) => state !== 'exited' && <Toolbar transition={state} />}
+        </Transition>
       </Ui>
     </>
   );

@@ -1,13 +1,18 @@
 import { PropsWithChildren } from 'react';
+import { TransitionStatus } from 'react-transition-group';
 import styled from 'styled-components';
+import { ANIMATION_DELAY } from '../contants';
+import { backdropIn, backdropOut, modalIn, modalOut } from './modal.animations';
 
 /* eslint-disable-next-line */
-export interface ModalProps extends PropsWithChildren {}
+export interface ModalProps extends PropsWithChildren {
+  transition?: TransitionStatus;
+}
 
 export function Modal(props: ModalProps) {
   return (
-    <Backdrop>
-      <Container>{props.children}</Container>
+    <Backdrop className={props.transition}>
+      <Container className={props.transition}>{props.children}</Container>
     </Backdrop>
   );
 }
@@ -20,10 +25,15 @@ const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0);
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: ${backdropIn} ${ANIMATION_DELAY}ms forwards;
+
+  &.exiting {
+    animation: ${backdropOut} ${ANIMATION_DELAY}ms forwards;
+  }
 `;
 
 const Container = styled.div`
@@ -31,4 +41,10 @@ const Container = styled.div`
   background-color: #444444;
   border-radius: 4rem 0;
   box-shadow: 1rem 1rem 3rem #000, -1rem 1rem 3rem #000;
+  transform: translateX(-110vw);
+  animation: ${modalIn} ${ANIMATION_DELAY}ms forwards;
+
+  &.exiting {
+    animation: ${modalOut} ${ANIMATION_DELAY}ms forwards;
+  }
 `;
