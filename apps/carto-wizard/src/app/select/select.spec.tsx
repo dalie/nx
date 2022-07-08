@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Start from './start';
+import Select from './select';
 
-describe('Start', () => {
+describe('Select', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Start />);
+    const { baseElement } = render(<Select />);
     expect(baseElement).toBeTruthy();
   });
 });

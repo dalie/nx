@@ -1,29 +1,15 @@
-import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import Brand from '../brand/brand';
-import Button from '../button/button';
 import { ANIMATION_DELAY } from '../contants';
-import { PropsWithTransition } from '../ui/props-with-transition';
-import { uiState } from '../ui/ui.state';
 import { toolbarIn, toolbarOut } from './toolbar.animations';
 
 /* eslint-disable-next-line */
-export interface ToolbarProps extends PropsWithTransition {}
+export interface ToolbarProps {}
 
 export function Toolbar(props: ToolbarProps) {
-  const [ui, setUi] = useRecoilState(uiState);
-
-  const onBtn = () => {
-    setUi({
-      start: true,
-      toolbar: false,
-    });
-  };
-
   return (
-    <StyledDiv className={props.transition}>
+    <StyledDiv>
       <Brand />
-      <Button onClick={onBtn}>Stop</Button>
     </StyledDiv>
   );
 }

@@ -1,39 +1,39 @@
+import { motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
-import { TransitionStatus } from 'react-transition-group';
 import styled from 'styled-components';
 import { ANIMATION_DELAY } from '../contants';
-import { backdropIn, backdropOut, modalIn, modalOut } from './modal.animations';
+import { modalIn, modalOut } from './modal.animations';
 
 /* eslint-disable-next-line */
 export interface ModalProps extends PropsWithChildren {
-  transition?: TransitionStatus;
+  className?: string;
 }
 
 export function Modal(props: ModalProps) {
+  console.log(props.className);
   return (
-    <Backdrop className={props.transition}>
-      <Container className={props.transition}>{props.children}</Container>
+    <Backdrop
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <Container>{props.children}</Container>
     </Backdrop>
   );
 }
 
 export default Modal;
 
-const Backdrop = styled.div`
+const Backdrop = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(0);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: ${backdropIn} ${ANIMATION_DELAY}ms forwards;
-
-  &.exiting {
-    animation: ${backdropOut} ${ANIMATION_DELAY}ms forwards;
-  }
 `;
 
 const Container = styled.div`
