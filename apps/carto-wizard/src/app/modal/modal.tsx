@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
-import { ANIMATION_DELAY } from '../contants';
-import { modalIn, modalOut } from './modal.animations';
 
 /* eslint-disable-next-line */
 export interface ModalProps extends PropsWithChildren {
@@ -10,14 +8,19 @@ export interface ModalProps extends PropsWithChildren {
 }
 
 export function Modal(props: ModalProps) {
-  console.log(props.className);
   return (
     <Backdrop
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ backdropFilter: 'blur(0px)' }}
+      animate={{ backdropFilter: 'blur(10px)' }}
+      exit={{ backdropFilter: 'blur(0px)' }}
     >
-      <Container>{props.children}</Container>
+      <Container
+        initial={{ transform: 'translateX(-80vw) skewX(30deg) scaleX(1.3)' }}
+        animate={{ transform: 'translateX(0px) skewX(0deg) scaleX(1)' }}
+        exit={{ transform: 'translateX(80vw) skewX(30deg) scaleX(1.3)' }}
+      >
+        {props.children}
+      </Container>
     </Backdrop>
   );
 }
@@ -30,21 +33,15 @@ const Backdrop = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Container = styled.div`
+const Container = styled(motion.div)`
+  transform: translateX(-80vw);
   padding: 2rem 4rem;
   background-color: #444444;
   border-radius: 4rem 0;
   box-shadow: 1rem 1rem 3rem #000, -1rem 1rem 3rem #000;
-  transform: translateX(-110vw);
-  animation: ${modalIn} ${ANIMATION_DELAY}ms forwards;
-
-  &.exiting {
-    animation: ${modalOut} ${ANIMATION_DELAY}ms forwards;
-  }
 `;
