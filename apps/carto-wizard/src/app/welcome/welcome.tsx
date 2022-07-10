@@ -13,10 +13,10 @@ export function Welcome(props: WelcomeProps) {
         <h1>CartoWizard</h1>
         <List>
           <ListItem>
-            <Link to="/countries">Countries</Link>
+            <Link to="/play">Countries</Link>
           </ListItem>
           <ListItem>
-            <Link to="/flags">Flags</Link>
+            <Link to="/play">Flags</Link>
           </ListItem>
         </List>
       </Container>

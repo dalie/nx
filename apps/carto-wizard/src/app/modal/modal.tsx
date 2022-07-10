@@ -15,9 +15,9 @@ export function Modal(props: ModalProps) {
       exit={{ backdropFilter: 'blur(0px)' }}
     >
       <Container
-        initial={{ transform: 'translateX(-80vw) skewX(30deg) scaleX(1.3)' }}
+        initial={{ transform: 'translateX(-50vw) skewX(30deg) scaleX(1.3)' }}
         animate={{ transform: 'translateX(0px) skewX(0deg) scaleX(1)' }}
-        exit={{ transform: 'translateX(80vw) skewX(30deg) scaleX(1.3)' }}
+        exit={{ transform: 'translateX(100vw) skewX(30deg) scaleX(1.3)' }}
       >
         {props.children}
       </Container>

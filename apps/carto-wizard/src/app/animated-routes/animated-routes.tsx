@@ -1,7 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { ANIMATION_DELAY } from '../contants';
-import Layout from '../layout/layout';
 import Play from '../play/play';
 import Select from '../select/select';
 import Welcome from '../welcome/welcome';

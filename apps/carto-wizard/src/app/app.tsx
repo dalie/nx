@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import AnimatedRoutes from './animated-routes/animated-routes';
-import { appAtom } from './app.atom';
+import { appAtom } from './app.state';
 import { COUNTRIES_API_URL } from './contants';
 import Map from './map/map';
 import Ui from './ui/ui';
@@ -22,10 +22,11 @@ export function App() {
           countries,
         };
       });
+      console.log('fetch countries');
     };
 
     fetchCountries();
-  }, [setAppState]);
+  }, []);
 
   return (
     <BrowserRouter>
