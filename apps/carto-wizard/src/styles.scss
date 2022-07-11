@@ -9,7 +9,10 @@ body,
   overflow-x: hidden;
 }
 
-html {
-  color: #ffffff;
+body {
+  --dark: #1e1e44ee;
+  --light: #efefef;
+  color: var(--light);
+  background: #222244;
   font-family: 'Roboto', sans-serif;
 }

@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../button/button';
 import Modal from '../modal/modal';
-import { Link } from 'react-router-dom';
 
 /* eslint-disable-next-line */
 export interface WelcomeProps {}
@@ -12,12 +12,9 @@ export function Welcome(props: WelcomeProps) {
       <Container>
         <h1>CartoWizard</h1>
         <List>
-          <ListItem>
-            <Link to="/play">Countries</Link>
-          </ListItem>
-          <ListItem>
-            <Link to="/play">Flags</Link>
-          </ListItem>
+          <Button to="/play">Countries</Button>
+
+          <Button to="/play">Flags</Button>
         </List>
       </Container>
     </Modal>
@@ -36,13 +33,9 @@ const List = styled.div`
   display: flex;
   gap: 1rem;
   margin: 1rem 1rem 3rem 1rem;
-`;
 
-const ListItem = styled.div`
-  aspect-ratio: 4/3;
-  width: 20ch;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  & > * {
+    width: 20ch;
+    aspect-ratio: 4/3;
+  }
 `;

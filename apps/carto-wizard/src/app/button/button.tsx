@@ -25,18 +25,18 @@ const StyledLink = styled(Link)`
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
-  color: white;
+  color: var(--light);
   background-color: #2196f3;
   box-shadow: 0 0 4px #999;
   outline: none;
-
   background-position: center;
   transition: background 0.8s;
   text-decoration: none;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
-    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%)
-      center/15000%;
+    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
   }
 
   &:active {
@@ -53,17 +53,18 @@ const StyledButton = styled.button`
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
-  color: white;
+  color: var(--light);
   background-color: #2196f3;
   box-shadow: 0 0 4px #999;
   outline: none;
 
   background-position: center;
   transition: background 0.8s;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
-    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%)
-      center/15000%;
+    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
   }
 
   &:active {

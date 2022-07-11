@@ -41,7 +41,7 @@ const Backdrop = styled(motion.div)`
 const Container = styled(motion.div)`
   transform: translateX(-80vw);
   padding: 2rem 4rem;
-  background-color: #444444;
+  background-color: var(--dark);
   border-radius: 4rem 0;
   box-shadow: 1rem 1rem 3rem #000, -1rem 1rem 3rem #000;
 `;

@@ -28,7 +28,7 @@ export function Play(props: PlayProps) {
   return (
     <>
       <Toolbar />
-      <h1>Welcome to Play!</h1>
+      <h1></h1>
     </>
   );
 }
