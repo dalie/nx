@@ -4,6 +4,10 @@ import Play from '../play/play';
 import Select from '../select/select';
 import Welcome from '../welcome/welcome';
 
+export type PlayParams = {
+  mode: 'countries' | 'flags';
+};
+
 /* eslint-disable-next-line */
 export interface AnimatedRoutesProps {}
 
@@ -15,7 +19,7 @@ export function AnimatedRoutes(props: AnimatedRoutesProps) {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Welcome />} />
         <Route path="/select" element={<Select />} />
-        <Route path="/play" element={<Play />} />
+        <Route path="/play/:mode" element={<Play />} />
       </Routes>
     </AnimatePresence>
   );

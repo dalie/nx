@@ -1,11 +1,12 @@
 import { atom, DefaultValue, selector } from 'recoil';
+import { Country } from '../app.state';
 interface PlayState {
-  currentCountry: string;
+  currentCountry: Country | null;
   isPlaying: boolean;
 }
 
 const defaultState: PlayState = {
-  currentCountry: '',
+  currentCountry: null,
   isPlaying: false,
 };
 
@@ -34,7 +35,7 @@ export const playCurrentCountryState = selector({
 
     set(playAtom, {
       ...play,
-      currentCountry: newValue instanceof DefaultValue ? '' : newValue,
+      currentCountry: newValue instanceof DefaultValue ? null : newValue,
     });
   },
 });

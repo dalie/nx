@@ -8,7 +8,7 @@ export interface ToolbarProps {}
 export function Toolbar(props: ToolbarProps) {
   return (
     <Container
-      initial={{ transform: 'trnaslateY(-4rem)' }}
+      initial={{ transform: 'translateY(-4rem)' }}
       animate={{ transform: 'translateY(0rem)' }}
       exit={{ transform: 'translateY(-4rem)' }}
     >
@@ -25,5 +25,5 @@ const Container = styled(motion.div)`
   gap: 1rem;
   height: 3rem;
   background-color: var(--dark);
-  box-shadow: 1rem 1rem 3rem #000, -1rem 1rem 3rem #000;
+  box-shadow: 0 0.25rem 1rem #000;
 `;

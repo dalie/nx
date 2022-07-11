@@ -1,32 +1,42 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import AnimatedRoutes from './animated-routes/animated-routes';
-import { appAtom } from './app.state';
+import { countriesState } from './app.state';
 import { COUNTRIES_API_URL } from './contants';
 import Map from './map/map';
 import Ui from './ui/ui';
 
+interface JsonCountry {
+  cca2: string;
+  name: { common: string };
+  flags: { svg: string };
+  latLng: [number, number];
+}
+
 export function App() {
-  const setAppState = useSetRecoilState(appAtom);
+  const [countries, setCountries] = useRecoilState(countriesState);
 
   useEffect(() => {
-    const fetchCountries = async () => {
-      const response = await fetch(COUNTRIES_API_URL);
-      const countries = await response.json();
+    if (!countries || countries.length === 0) {
+      const fetchCountries = async () => {
+        const response = await fetch(COUNTRIES_API_URL);
+        const countries = await response.json();
 
-      setAppState((currentState) => {
-        return {
-          ...currentState,
-          countries,
-        };
-      });
-      console.log('fetch countries');
-    };
+        setCountries(
+          countries.map((c: JsonCountry) => ({
+            code: c.cca2,
+            name: c.name.common,
+            flags: c.flags.svg,
+            latLng: c.latLng,
+          }))
+        );
+      };
 
-    fetchCountries();
-  }, []);
+      fetchCountries();
+    }
+  }, [countries, setCountries]);
 
   return (
     <BrowserRouter>

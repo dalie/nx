@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../button/button';
 import Modal from '../modal/modal';
@@ -12,9 +11,9 @@ export function Welcome(props: WelcomeProps) {
       <Container>
         <h1>CartoWizard</h1>
         <List>
-          <Button to="/play">Countries</Button>
+          <Button to="/play/countries">Countries</Button>
 
-          <Button to="/play">Flags</Button>
+          <Button to="/play/flags">Flags</Button>
         </List>
       </Container>
     </Modal>
@@ -31,6 +30,7 @@ const Container = styled.div`
 
 const List = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 1rem 3rem 1rem;
 

@@ -1,12 +1,13 @@
 import { atom, DefaultValue, selector } from 'recoil';
 
+export type Country = {
+  name: string;
+  flags: string;
+  code: string;
+  latLng: [number, number];
+};
 interface AppState {
-  countries?: {
-    name: string;
-    flag: string;
-    code: string;
-    latLng: [number, number];
-  }[];
+  countries?: Country[];
 }
 
 const defaultState: AppState = {
@@ -21,7 +22,7 @@ export const appAtom = atom({
   effects: [
     ({ onSet }) => {
       onSet((newValue) => {
-        const oldValue = JSON.parse(localStorage.getItem('AppState') ?? '');
+        const oldValue = JSON.parse(localStorage.getItem('AppState') ?? '{}');
 
         localStorage.setItem('AppState', JSON.stringify({ ...oldValue, ...newValue }));
       });
