@@ -3,22 +3,33 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
 
+interface Choice {
+  country: Country;
+  state: '' | 'correct' | 'wrong';
+}
+
 /* eslint-disable-next-line */
 export interface AskCountryProps {
   country: Country;
-  guesses: Country[];
+  choices: Country[];
 }
 
 export function AskCountry(props: AskCountryProps) {
-  const [items, setItems] = useState<Country[] | null>();
+  const [choices, setChoices] = useState<Choice[]>(
+    [props.country, ...props.choices].sort(() => 0.5 - Math.random()).map((c) => ({ country: c, state: '' }))
+  );
 
   const isLongString = (value: string) => {
     return value.length > 18;
   };
 
-  useEffect(() => {
-    setItems([props.country, ...props.guesses].sort(() => 0.5 - Math.random()));
-  }, [props.country, props.guesses]);
+  const clickChoice = (choice: Choice) => {
+    if (choice.country === props.country) {
+      console.log('correct:', choice.country.name);
+    } else {
+      console.log('wrong:', choice.country.name);
+    }
+  };
 
   return (
     <Container
@@ -26,13 +37,13 @@ export function AskCountry(props: AskCountryProps) {
       animate={{ transform: 'translateY(0rem)' }}
       exit={{ transform: 'translateY(6rem)' }}
     >
-      {items?.map((i) => (
-        <CountryDiv isLongString={isLongString(i.name)}>
+      {choices?.map((c) => (
+        <CountryButton key={c.country.code} isLongString={isLongString(c.country.name)} onClick={() => clickChoice(c)}>
           <FlagContainer>
-            <FlagImg alt={i.name} src={i.flags} />
+            <FlagImg alt={c.country.name} src={c.country.flags} />
           </FlagContainer>
-          {i.name}
-        </CountryDiv>
+          {c.country.name}
+        </CountryButton>
       ))}
     </Container>
   );
@@ -49,7 +60,7 @@ const Container = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 1rem;
   gap: 1rem;
   //height: 5rem;
@@ -57,12 +68,24 @@ const Container = styled(motion.div)`
   box-shadow: 0 -0.25rem 1rem #000;
 `;
 
-const CountryDiv = styled.div<{ isLongString: boolean }>`
+const CountryButton = styled.button<{ isLongString: boolean }>`
+  all: unset;
+  cursor: pointer;
   display: flex;
   gap: 1rem;
   align-items: center;
   justify-content: start;
   font-size: ${(props) => (props.isLongString ? '1rem' : '1.5rem')};
+  background-color: #667799;
+  padding: 0.5rem 1rem;
+  flex-grow: 1;
+
+  border-radius: 0.75rem;
+  &:hover,
+  :active,
+  :focus {
+    box-shadow: 0 0 1rem #ffffff;
+  }
 
   @media (max-width: 700px) {
     width: 90vw;

@@ -1,6 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import Play from '../play/play';
+import PlayCountries from '../play-countries/play-countries';
+import PlayFlags from '../play-flags/play-flags';
 import Select from '../select/select';
 import Welcome from '../welcome/welcome';
 
@@ -19,7 +20,8 @@ export function AnimatedRoutes(props: AnimatedRoutesProps) {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Welcome />} />
         <Route path="/select" element={<Select />} />
-        <Route path="/play/:mode" element={<Play />} />
+        <Route path="/play/countries" element={<PlayCountries />} />
+        <Route path="/play/flags" element={<PlayFlags />} />
       </Routes>
     </AnimatePresence>
   );

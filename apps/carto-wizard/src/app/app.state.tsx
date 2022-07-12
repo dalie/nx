@@ -4,7 +4,7 @@ export type Country = {
   name: string;
   flags: string;
   code: string;
-  latLng: [number, number];
+  lngLat: [number, number];
 };
 interface AppState {
   countries?: Country[];

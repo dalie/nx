@@ -1,25 +1,22 @@
 import { MapboxEvent, MapMouseEvent } from 'mapbox-gl';
 import MapGl from 'react-map-gl';
-import { useRecoilValue } from 'recoil';
-import { isPlayingState } from '../play/play.state';
 
 /* eslint-disable-next-line */
-export interface MapProps {}
+export interface MapProps {
+  location: [number, number];
+}
 
 export function Map(props: MapProps) {
-  const isPlaying = useRecoilValue(isPlayingState);
-
   const onMapLoad = (e: MapboxEvent) => {
     e.target.setFog({});
   };
 
   const onMapClick = (e: MapMouseEvent) => {
-    if (isPlaying) {
-      console.log(e.lngLat);
-    }
+    console.log(e.lngLat);
   };
   return (
     <MapGl
+      id="gameMap"
       mapboxAccessToken="pk.eyJ1IjoiZG9taW5pY2FsaWUiLCJhIjoiY2tuZzJ0YWtvMDcwejJxczlwa2NtbW0zeSJ9.ire3NMM19l7z4Zeqa20RVw"
       projection={'globe'}
       initialViewState={{

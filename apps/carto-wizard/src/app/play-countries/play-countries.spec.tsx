@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Play from './play';
+import PlayCountries from './play-countries';
 
-describe('Play', () => {
+describe('PlayCountries', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Play />);
+    const { baseElement } = render(<PlayCountries />);
     expect(baseElement).toBeTruthy();
   });
 });
