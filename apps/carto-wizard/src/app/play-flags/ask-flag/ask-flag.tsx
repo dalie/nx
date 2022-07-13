@@ -1,25 +1,56 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import mapboxgl, { MapMouseEvent } from 'mapbox-gl';
+import { useCallback, useEffect, useState } from 'react';
+import { useMap } from 'react-map-gl';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
 
 /* eslint-disable-next-line */
 export interface AskFlagProps {
-  country: Country;
+  answer: Country;
+  onCorrectAnswer: (score: number) => void;
 }
 
 export function AskFlag(props: AskFlagProps) {
+  const { gameMap } = useMap();
   const [isLargeCountryName, setIsLargeCountryName] = useState(false);
+
+  const mapClick = useCallback(
+    (event: MapMouseEvent) => {
+      if (gameMap) {
+        const features = gameMap.queryRenderedFeatures(event.point, {
+          layers: ['countries'],
+        });
+
+        if (features?.length && features[0].properties && features[0].properties['alpha2Code'] === props.answer.code2) {
+          props.onCorrectAnswer(100);
+        }
+      }
+    },
+    [props, gameMap]
+  );
+
+  useEffect(() => {
+    if (gameMap) {
+      gameMap.on('click', 'countries', mapClick);
+    }
+    return function cleanup() {
+      //cleanup listeners
+      if (gameMap) {
+        gameMap.off('click', 'countries', mapClick);
+      }
+    };
+  }, [gameMap, mapClick]);
 
   useEffect(() => {
     const columnWidth = 12;
 
-    if (props.country.name.length > columnWidth * 2) {
+    if (props.answer.name.length > columnWidth * 2) {
       setIsLargeCountryName(true);
     } else {
       setIsLargeCountryName(false);
     }
-  }, [props.country]);
+  }, [props.answer]);
 
   return (
     <Container
@@ -28,8 +59,8 @@ export function AskFlag(props: AskFlagProps) {
       exit={{ transform: 'translateY(6rem)' }}
     >
       <CountryDiv isLargeCountryName={isLargeCountryName}>
-        <FlagImg alt={props.country.name} src={props.country.flag} />
-        {props.country.name}
+        <FlagImg alt={props.answer.name} src={props.answer.flag} />
+        {props.answer.name}
       </CountryDiv>
     </Container>
   );

@@ -90,7 +90,8 @@ export function PlayCountries(props: PlayCountriesProps) {
 
       {finished && (
         <Modal>
-          <p>Congratulatons!</p>
+          <p>Congratulations!</p>
+          <p>The correct answer was {answer?.name}</p>
           <Button onClick={() => nextAnswer()}>Next</Button>
         </Modal>
       )}
