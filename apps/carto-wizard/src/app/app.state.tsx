@@ -1,10 +1,19 @@
 import { atom, DefaultValue, selector } from 'recoil';
 
 export type Country = {
-  name: string;
-  flags: string;
-  code: string;
+  area: number;
+  borders: string[];
+  capital: string;
+  capitalLngLat: [number, number];
+  code2: string;
+  code3: string;
+  flag: string;
+  id: number | string;
   lngLat: [number, number];
+  name: string;
+  population: number;
+  region: string;
+  subregion: string;
 };
 interface AppState {
   countries?: Country[];

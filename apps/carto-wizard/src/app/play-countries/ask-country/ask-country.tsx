@@ -1,34 +1,44 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
+import Modal from '../../modal/modal';
 
 interface Choice {
   country: Country;
-  state: '' | 'correct' | 'wrong';
+  state: 'default' | 'correct' | 'wrong';
 }
 
 /* eslint-disable-next-line */
 export interface AskCountryProps {
-  country: Country;
+  answer: Country;
   choices: Country[];
+  onCorrectAnswer: (score: number) => void;
 }
 
 export function AskCountry(props: AskCountryProps) {
-  const [choices, setChoices] = useState<Choice[]>(
-    [props.country, ...props.choices].sort(() => 0.5 - Math.random()).map((c) => ({ country: c, state: '' }))
-  );
+  const [choices, setChoices] = useState<Choice[]>([]);
+
+  useEffect(() => {
+    setChoices(
+      [props.answer, ...props.choices].sort(() => 0.5 - Math.random()).map((c) => ({ country: c, state: 'default' }))
+    );
+  }, [props.choices, props.answer]);
 
   const isLongString = (value: string) => {
     return value.length > 18;
   };
 
   const clickChoice = (choice: Choice) => {
-    if (choice.country === props.country) {
-      console.log('correct:', choice.country.name);
+    if (choice.country === props.answer) {
+      choice.state = 'correct';
+      props.onCorrectAnswer(100);
     } else {
+      choice.state = 'wrong';
       console.log('wrong:', choice.country.name);
     }
+
+    setChoices([...choices]);
   };
 
   return (
@@ -38,9 +48,15 @@ export function AskCountry(props: AskCountryProps) {
       exit={{ transform: 'translateY(6rem)' }}
     >
       {choices?.map((c) => (
-        <CountryButton key={c.country.code} isLongString={isLongString(c.country.name)} onClick={() => clickChoice(c)}>
+        <CountryButton
+          disabled={c.state !== 'default'}
+          className={c.state}
+          key={c.country.id}
+          isLongString={isLongString(c.country.name)}
+          onClick={() => clickChoice(c)}
+        >
           <FlagContainer>
-            <FlagImg alt={c.country.name} src={c.country.flags} />
+            <FlagImg alt={c.country.name} src={c.country.flag} />
           </FlagContainer>
           {c.country.name}
         </CountryButton>
@@ -81,10 +97,21 @@ const CountryButton = styled.button<{ isLongString: boolean }>`
   flex-grow: 1;
 
   border-radius: 0.75rem;
-  &:hover,
-  :active,
-  :focus {
-    box-shadow: 0 0 1rem #ffffff;
+
+  &:not([disabled]) {
+    &:hover,
+    :active,
+    :focus {
+      box-shadow: 0 0 1rem #ffffff;
+    }
+  }
+
+  &.wrong {
+    box-shadow: 0 0 1rem #f37575;
+  }
+
+  &.correct {
+    box-shadow: 0 0 1rem #75f386;
   }
 
   @media (max-width: 700px) {

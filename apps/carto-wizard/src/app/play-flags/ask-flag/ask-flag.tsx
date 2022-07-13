@@ -28,7 +28,7 @@ export function AskFlag(props: AskFlagProps) {
       exit={{ transform: 'translateY(6rem)' }}
     >
       <CountryDiv isLargeCountryName={isLargeCountryName}>
-        <FlagImg alt={props.country.name} src={props.country.flags} />
+        <FlagImg alt={props.country.name} src={props.country.flag} />
         {props.country.name}
       </CountryDiv>
     </Container>
