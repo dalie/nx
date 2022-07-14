@@ -1,18 +1,21 @@
 import { motion } from 'framer-motion';
-import mapboxgl, { MapMouseEvent } from 'mapbox-gl';
+import { MapMouseEvent } from 'mapbox-gl';
 import { useCallback, useEffect, useState } from 'react';
 import { useMap } from 'react-map-gl';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
+import Button from '../../button/button';
 
 /* eslint-disable-next-line */
 export interface AskFlagProps {
   answer: Country;
   onCorrectAnswer: (score: number) => void;
+  onGiveUp: () => void;
 }
 
 export function AskFlag(props: AskFlagProps) {
   const { gameMap } = useMap();
+  const [attempts, setAttempts] = useState(1);
   const [isLargeCountryName, setIsLargeCountryName] = useState(false);
 
   const mapClick = useCallback(
@@ -23,11 +26,15 @@ export function AskFlag(props: AskFlagProps) {
         });
 
         if (features?.length && features[0].properties && features[0].properties['alpha2Code'] === props.answer.code2) {
-          props.onCorrectAnswer(100);
+          props.onCorrectAnswer(attempts);
+        } else {
+          setAttempts((oldValue) => {
+            return oldValue + 1;
+          });
         }
       }
     },
-    [props, gameMap]
+    [props, gameMap, attempts]
   );
 
   useEffect(() => {
@@ -43,6 +50,7 @@ export function AskFlag(props: AskFlagProps) {
   }, [gameMap, mapClick]);
 
   useEffect(() => {
+    setAttempts(1);
     const columnWidth = 12;
 
     if (props.answer.name.length > columnWidth * 2) {
@@ -52,6 +60,21 @@ export function AskFlag(props: AskFlagProps) {
     }
   }, [props.answer]);
 
+  const onGiveUp = () => {
+    gameMap?.fitBounds([props.answer.bounds.sw, props.answer.bounds.ne], {
+      duration: 1000,
+      padding: {
+        bottom: 300,
+        left: 150,
+        right: 150,
+        top: 150,
+      },
+    });
+
+    setTimeout(() => {
+      props.onGiveUp();
+    }, 2000);
+  };
   return (
     <Container
       initial={{ transform: 'translateY(6rem)' }}
@@ -60,8 +83,10 @@ export function AskFlag(props: AskFlagProps) {
     >
       <CountryDiv isLargeCountryName={isLargeCountryName}>
         <FlagImg alt={props.answer.name} src={props.answer.flag} />
-        {props.answer.name}
+
+        <span>{props.answer.name}</span>
       </CountryDiv>
+      <Button onClick={() => onGiveUp()}>Give up</Button>
     </Container>
   );
 }
@@ -98,4 +123,5 @@ const FlagImg = styled.img`
   box-shadow: 0 0 0.75rem;
   max-width: 6rem;
   max-height: 4rem;
+  width: 100%;
 `;

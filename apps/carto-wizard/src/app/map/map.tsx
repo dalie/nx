@@ -56,6 +56,8 @@ export function Map(props: MapProps) {
         latitude: 25,
         zoom: 1.75,
       }}
+      maxZoom={8}
+      minZoom={1.75}
       style={{ width: '100%', height: '100%' }}
       mapStyle="mapbox://styles/dominicalie/cktkdp5ye4yre17pb7tiy8yvs"
       onLoad={onMapLoad}

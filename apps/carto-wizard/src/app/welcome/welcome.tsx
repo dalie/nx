@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Button from '../button/button';
 import Modal from '../modal/modal';
+import { ToggleButton, ToggleButtonGroup } from '../toggle-button';
 
 /* eslint-disable-next-line */
 export interface WelcomeProps {}
@@ -12,9 +13,13 @@ export function Welcome(props: WelcomeProps) {
         <h1>CartoWizard</h1>
         <List>
           <Button to="/play/countries">Countries</Button>
-
           <Button to="/play/flags">Flags</Button>
         </List>
+        <ToggleButtonGroup>
+          <ToggleButton />
+          <ToggleButton />
+          <ToggleButton />
+        </ToggleButtonGroup>
       </Container>
     </Modal>
   );

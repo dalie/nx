@@ -2,6 +2,7 @@ import { atom, DefaultValue, selector } from 'recoil';
 
 export type Country = {
   area: number;
+  bounds: { sw: [number, number]; ne: [number, number] };
   borders: string[];
   capital: string;
   capitalLngLat: [number, number];

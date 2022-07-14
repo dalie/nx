@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
-import Modal from '../../modal/modal';
 
 interface Choice {
   country: Country;
@@ -13,33 +12,40 @@ interface Choice {
 export interface AskCountryProps {
   answer: Country;
   choices: Country[];
-  onCorrectAnswer: (score: number) => void;
+  onCorrectAnswer: (attempts: number) => void;
 }
 
 export function AskCountry(props: AskCountryProps) {
   const [choices, setChoices] = useState<Choice[]>([]);
+  const [attempts, setAttempts] = useState(1);
 
   useEffect(() => {
     setChoices(
       [props.answer, ...props.choices].sort(() => 0.5 - Math.random()).map((c) => ({ country: c, state: 'default' }))
     );
+    setAttempts(1);
   }, [props.choices, props.answer]);
 
   const isLongString = (value: string) => {
     return value.length > 18;
   };
 
-  const clickChoice = (choice: Choice) => {
-    if (choice.country === props.answer) {
-      choice.state = 'correct';
-      props.onCorrectAnswer(100);
-    } else {
-      choice.state = 'wrong';
-      console.log('wrong:', choice.country.name);
-    }
+  const clickChoice = useCallback(
+    (choice: Choice) => {
+      if (choice.country === props.answer) {
+        choice.state = 'correct';
+        props.onCorrectAnswer(attempts);
+      } else {
+        choice.state = 'wrong';
+        setAttempts((oldValue) => {
+          return oldValue + 1;
+        });
+      }
 
-    setChoices([...choices]);
-  };
+      setChoices([...choices]);
+    },
+    [attempts, setAttempts, choices, props]
+  );
 
   return (
     <Container
@@ -82,6 +88,15 @@ const Container = styled(motion.div)`
   //height: 5rem;
   background-color: var(--dark);
   box-shadow: 0 -0.25rem 1rem #000;
+  @media (max-width: 700px) {
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 700px) and (max-width: 1200px) {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
 `;
 
 const CountryButton = styled.button<{ isLongString: boolean }>`
@@ -91,7 +106,7 @@ const CountryButton = styled.button<{ isLongString: boolean }>`
   gap: 1rem;
   align-items: center;
   justify-content: start;
-  font-size: ${(props) => (props.isLongString ? '1rem' : '1.5rem')};
+  font-size: ${(props) => (props.isLongString ? '1rem' : '1.25rem')};
   background-color: #667799;
   padding: 0.5rem 1rem;
   flex-grow: 1;
@@ -116,6 +131,7 @@ const CountryButton = styled.button<{ isLongString: boolean }>`
 
   @media (max-width: 700px) {
     width: 90vw;
+    padding: 0.25rem 0.5rem;
   }
 
   @media (min-width: 700px) and (max-width: 1200px) {
@@ -129,6 +145,13 @@ const FlagContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
+  @media (max-width: 700px) {
+    width: 2rem;
+  }
+
+  @media (min-width: 700px) and (max-width: 1200px) {
+    width: 4rem;
+  }
 `;
 
 const FlagImg = styled.img`
