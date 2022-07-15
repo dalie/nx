@@ -12,6 +12,7 @@ interface Choice {
 export interface AskCountryProps {
   answer: Country;
   choices: Country[];
+  hideName: boolean;
   onCorrectAnswer: (attempts: number) => void;
 }
 
@@ -56,15 +57,15 @@ export function AskCountry(props: AskCountryProps) {
       {choices?.map((c) => (
         <CountryButton
           disabled={c.state !== 'default'}
-          className={c.state}
+          className={`${c.state} ${props.hideName ? 'no-label' : ''}`}
           key={c.country.id}
           isLongString={isLongString(c.country.name)}
           onClick={() => clickChoice(c)}
         >
-          <FlagContainer>
+          <FlagContainer className={props.hideName ? 'no-label' : ''}>
             <FlagImg alt={c.country.name} src={c.country.flag} />
           </FlagContainer>
-          {c.country.name}
+          {!props.hideName && c.country.name}
         </CountryButton>
       ))}
     </Container>
@@ -110,9 +111,12 @@ const CountryButton = styled.button<{ isLongString: boolean }>`
   background-color: #667799;
   padding: 0.5rem 1rem;
   flex-grow: 1;
-
   border-radius: 0.75rem;
 
+  &.no-label {
+    flex-grow: 0;
+    justify-content: center;
+  }
   &:not([disabled]) {
     &:hover,
     :active,
@@ -131,11 +135,18 @@ const CountryButton = styled.button<{ isLongString: boolean }>`
 
   @media (max-width: 700px) {
     width: 90vw;
+
+    &.no-label {
+      width: 40vw;
+    }
     padding: 0.25rem 0.5rem;
   }
 
   @media (min-width: 700px) and (max-width: 1200px) {
     width: 40vw;
+    &.no-label {
+      width: unset;
+    }
   }
 `;
 
@@ -145,12 +156,21 @@ const FlagContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
+  &.no-label {
+    justify-content: center;
+  }
   @media (max-width: 700px) {
     width: 2rem;
+    &.no-label {
+      width: 6rem;
+    }
   }
 
   @media (min-width: 700px) and (max-width: 1200px) {
     width: 4rem;
+    &.no-label {
+      width: 6rem;
+    }
   }
 `;
 

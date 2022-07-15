@@ -7,15 +7,23 @@ export interface ButtonProps extends PropsWithChildren {
   to?: string;
   onClick?: () => void;
   active?: boolean;
+  className?: string;
 }
 
 export function Button(props: ButtonProps) {
+  let className = props.className ?? '';
+  if (props.active && !className?.includes('active')) {
+    className = `${className} active`;
+  } else if (!props.active && className.includes('active')) {
+    className = className.replace('active', '');
+  }
+
   return props.to ? (
-    <StyledLink {...props} to={props.to} className={props.active ? 'active' : ''}>
+    <StyledLink {...props} to={props.to} className={className}>
       {props.children}
     </StyledLink>
   ) : (
-    <StyledButton {...props} className={props.active ? 'active' : ''}>
+    <StyledButton {...props} className={className}>
       {props.children}
     </StyledButton>
   );

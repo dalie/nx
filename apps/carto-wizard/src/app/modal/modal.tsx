@@ -5,13 +5,14 @@ import styled from 'styled-components';
 /* eslint-disable-next-line */
 export interface ModalProps extends PropsWithChildren {
   className?: string;
+  blur?: number;
 }
 
 export function Modal(props: ModalProps) {
   return (
     <Backdrop
       initial={{ backdropFilter: 'blur(0px)' }}
-      animate={{ backdropFilter: 'blur(10px)' }}
+      animate={{ backdropFilter: `blur(${props.blur != null ? props.blur : 10}px)` }}
       exit={{ backdropFilter: 'blur(0px)' }}
     >
       <Container

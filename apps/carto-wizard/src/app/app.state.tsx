@@ -1,5 +1,5 @@
 import { atom, DefaultValue, selector } from 'recoil';
-import { DifficultySetting } from './difficulty/difficulty';
+import { DifficultyLevel, DifficultySetting } from './difficulty/difficulty';
 
 export type Country = {
   area: number;
@@ -18,14 +18,14 @@ export type Country = {
   subregion: string;
 };
 interface AppState {
-  countries?: Country[];
-  difficultySettings?: DifficultySetting;
+  countries: Country[];
+  difficultySettings: DifficultySetting;
 }
 
 const defaultState: AppState = {
   countries: [],
   difficultySettings: {
-    difficulty: 'normal',
+    difficulty: DifficultyLevel.NORMAL,
     gameMode: 'countries',
   },
 };

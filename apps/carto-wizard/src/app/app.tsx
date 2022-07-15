@@ -27,7 +27,7 @@ interface FeatureProperties {
 }
 
 export function App() {
-  const [countries, setCountries] = useRecoilState<Country[] | undefined>(countriesState);
+  const [countries, setCountries] = useRecoilState(countriesState);
 
   const toCountry = (f: Feature) => {
     const calculateBounds = (feature: Feature) => {

@@ -32,16 +32,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  margin: 1rem 1rem 3rem 1rem;
-
-  & > * {
-    width: 20ch;
-    aspect-ratio: 4/3;
-  }
 `;

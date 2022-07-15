@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 import Button from '../button/button';
 
+export enum DifficultyLevel {
+  EASY,
+  NORMAL,
+  HARD,
+}
 export interface DifficultySetting {
   gameMode: 'countries' | 'flags';
-  difficulty: 'easy' | 'normal' | 'hard';
+  difficulty: DifficultyLevel;
 }
 
 /* eslint-disable-next-line */
@@ -20,7 +25,7 @@ export function Difficulty(props: DifficultyProps) {
     });
   };
 
-  const setDifficulty = (difficulty: 'easy' | 'normal' | 'hard') => {
+  const setDifficulty = (difficulty: DifficultyLevel) => {
     props.onDifficultyChange({
       difficulty,
       gameMode: props.settings.gameMode,
@@ -31,20 +36,29 @@ export function Difficulty(props: DifficultyProps) {
     <Container>
       <Group>
         <GroupedButton active={props.settings.gameMode === 'countries'} onClick={() => setMode('countries')}>
-          Countrie
+          Countries
         </GroupedButton>
         <GroupedButton active={props.settings.gameMode === 'flags'} onClick={() => setMode('flags')}>
           Flags
         </GroupedButton>
       </Group>
       <Group>
-        <GroupedButton active={props.settings.difficulty === 'easy'} onClick={() => setDifficulty('easy')}>
+        <GroupedButton
+          active={props.settings.difficulty === DifficultyLevel.EASY}
+          onClick={() => setDifficulty(DifficultyLevel.EASY)}
+        >
           Easy
         </GroupedButton>
-        <GroupedButton active={props.settings.difficulty === 'normal'} onClick={() => setDifficulty('normal')}>
+        <GroupedButton
+          active={props.settings.difficulty === DifficultyLevel.NORMAL}
+          onClick={() => setDifficulty(DifficultyLevel.NORMAL)}
+        >
           Normal
         </GroupedButton>
-        <GroupedButton active={props.settings.difficulty === 'hard'} onClick={() => setDifficulty('hard')}>
+        <GroupedButton
+          active={props.settings.difficulty === DifficultyLevel.HARD}
+          onClick={() => setDifficulty(DifficultyLevel.HARD)}
+        >
           Hard
         </GroupedButton>
       </Group>
