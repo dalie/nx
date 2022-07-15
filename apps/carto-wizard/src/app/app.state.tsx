@@ -1,4 +1,5 @@
 import { atom, DefaultValue, selector } from 'recoil';
+import { DifficultySetting } from './difficulty/difficulty';
 
 export type Country = {
   area: number;
@@ -18,10 +19,15 @@ export type Country = {
 };
 interface AppState {
   countries?: Country[];
+  difficultySettings?: DifficultySetting;
 }
 
 const defaultState: AppState = {
   countries: [],
+  difficultySettings: {
+    difficulty: 'normal',
+    gameMode: 'countries',
+  },
 };
 
 export const appAtom = atom({
@@ -48,7 +54,19 @@ export const countriesState = selector({
 
     set(appAtom, {
       ...app,
-      countries: newValue instanceof DefaultValue ? [] : newValue,
+      countries: newValue instanceof DefaultValue ? defaultState.countries : newValue,
+    });
+  },
+});
+
+export const difficultySettingsState = selector({
+  key: 'appDifficultySettingsState',
+  get: ({ get }) => get(appAtom).difficultySettings,
+  set: ({ get, set }, newValue) => {
+    const app = get(appAtom);
+    set(appAtom, {
+      ...app,
+      difficultySettings: newValue instanceof DefaultValue ? defaultState.difficultySettings : newValue,
     });
   },
 });

@@ -62,6 +62,8 @@ export function Map(props: MapProps) {
       mapStyle="mapbox://styles/dominicalie/cktkdp5ye4yre17pb7tiy8yvs"
       onLoad={onMapLoad}
       onClick={onMapClick}
+      maxPitch={0}
+      dragRotate={false}
       //onMouseMove={onMapMouseMove}
       //onMouseOut={() => setHoveredFeature(null)}
     >

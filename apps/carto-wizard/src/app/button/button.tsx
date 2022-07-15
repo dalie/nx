@@ -6,13 +6,18 @@ import styled from 'styled-components';
 export interface ButtonProps extends PropsWithChildren {
   to?: string;
   onClick?: () => void;
+  active?: boolean;
 }
 
 export function Button(props: ButtonProps) {
   return props.to ? (
-    <StyledLink to={props.to}>{props.children}</StyledLink>
+    <StyledLink {...props} to={props.to} className={props.active ? 'active' : ''}>
+      {props.children}
+    </StyledLink>
   ) : (
-    <StyledButton {...props}>{props.children}</StyledButton>
+    <StyledButton {...props} className={props.active ? 'active' : ''}>
+      {props.children}
+    </StyledButton>
   );
 }
 
@@ -35,7 +40,12 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  &:hover {
+  &.active {
+    box-shadow: 0 0 14px #6ff080;
+    background-color: #6ff080;
+  }
+
+  &:hover:not(.active) {
     background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
   }
 
@@ -63,7 +73,11 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  &:hover {
+  &.active {
+    box-shadow: 0 0 14px #6ff080;
+    background-color: #6ff080;
+  }
+  &:hover:not(.active) {
     background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
   }
 

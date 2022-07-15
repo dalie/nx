@@ -16,9 +16,11 @@ export function PlayCountries(props: PlayCountriesProps) {
   const [attempts, setAttempts] = useState(0);
 
   const countries = useRecoilValue(countriesState);
+  const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
 
   const [answer, setAnswer] = useState<Country | null>(null);
   const [finished, setFinished] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const choices = useMemo<Country[]>(() => {
     if (!countries?.length || !answer) {
@@ -50,7 +52,12 @@ export function PlayCountries(props: PlayCountriesProps) {
 
   const nextAnswer = useCallback(() => {
     if (countries?.length && gameMap) {
-      const country = countries[Math.floor(Math.random() * countries.length)];
+      const filteredCountries = countries.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
+      const country = filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
+      if (!country) {
+        setGameOver(true);
+        return;
+      }
 
       setFinished(false);
       setAnswer((oldAnswer) => {
@@ -64,16 +71,16 @@ export function PlayCountries(props: PlayCountriesProps) {
         return country;
       });
     }
-  }, [countries, gameMap]);
+  }, [countries, gameMap, guessedCountries]);
 
   useEffect(() => {
     nextAnswer();
-  }, [countries, nextAnswer]);
+  }, [countries]);
 
   useEffect(() => {
     if (answer && gameMap) {
       gameMap.fitBounds([answer.bounds.sw, answer.bounds.ne], {
-        duration: 1000,
+        duration: 2000,
         padding: {
           bottom: 300,
           left: 150,
@@ -87,18 +94,30 @@ export function PlayCountries(props: PlayCountriesProps) {
           { id: answer.id, source: 'countries_source', sourceLayer: 'processed' },
           { hover: true }
         );
-      }, 750);
+      }, 1750);
     }
+
+    return () => {
+      if (gameMap && answer) {
+        gameMap.setFeatureState(
+          { id: answer.id, source: 'countries_source', sourceLayer: 'processed' },
+          { hover: false }
+        );
+      }
+    };
   }, [answer, gameMap]);
 
   const onCorrectAnswer = (newAttempts: number) => {
+    setGuessedCountries((oldValue) => {
+      return [...oldValue, answer as Country];
+    });
     setFinished(true);
     setAttempts(newAttempts);
   };
 
   return (
     <>
-      <Toolbar />
+      <Toolbar totalCountries={countries?.length ?? 0} guessedCountries={guessedCountries.length + 1} />
       {answer !== null && choices !== null && (
         <AskCountry onCorrectAnswer={onCorrectAnswer} answer={answer} choices={choices} />
       )}
@@ -109,6 +128,14 @@ export function PlayCountries(props: PlayCountriesProps) {
           <p>The correct answer was {answer?.name}</p>
           <p>You found it {attempts > 1 ? `in ${attempts} attempts.` : `on your first try!`}</p>
           <Button onClick={() => nextAnswer()}>Next</Button>
+        </Modal>
+      )}
+
+      {gameOver && (
+        <Modal>
+          <p>Congratulations!</p>
+          <p>You found all the countries.</p>
+          <Button to="/">Home</Button>
         </Modal>
       )}
     </>

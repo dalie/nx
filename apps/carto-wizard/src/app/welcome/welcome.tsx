@@ -1,25 +1,26 @@
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { difficultySettingsState } from '../app.state';
 import Button from '../button/button';
+import Difficulty, { DifficultySetting } from '../difficulty/difficulty';
 import Modal from '../modal/modal';
-import { ToggleButton, ToggleButtonGroup } from '../toggle-button';
 
 /* eslint-disable-next-line */
 export interface WelcomeProps {}
 
 export function Welcome(props: WelcomeProps) {
+  const [difficultySettings, setDifficultySettings] = useRecoilState(difficultySettingsState);
+
+  const onDifficultyChange = (difficulty: DifficultySetting) => {
+    setDifficultySettings(difficulty);
+  };
+
   return (
     <Modal>
       <Container>
         <h1>CartoWizard</h1>
-        <List>
-          <Button to="/play/countries">Countries</Button>
-          <Button to="/play/flags">Flags</Button>
-        </List>
-        <ToggleButtonGroup>
-          <ToggleButton />
-          <ToggleButton />
-          <ToggleButton />
-        </ToggleButtonGroup>
+        <Difficulty settings={difficultySettings as DifficultySetting} onDifficultyChange={onDifficultyChange} />
+        <Button to={`/play/${difficultySettings?.gameMode}`}>Start</Button>
       </Container>
     </Modal>
   );

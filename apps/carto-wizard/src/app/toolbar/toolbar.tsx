@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import Brand from '../brand/brand';
 
 /* eslint-disable-next-line */
-export interface ToolbarProps {}
+export interface ToolbarProps {
+  totalCountries?: number;
+  guessedCountries?: number;
+}
 
 export function Toolbar(props: ToolbarProps) {
   return (
@@ -13,6 +16,11 @@ export function Toolbar(props: ToolbarProps) {
       exit={{ transform: 'translateY(-4rem)' }}
     >
       <Brand />
+      {props.guessedCountries != null && props.totalCountries != null && (
+        <CountryCount>
+          {props.guessedCountries} / {props.totalCountries}
+        </CountryCount>
+      )}
     </Container>
   );
 }
@@ -21,9 +29,15 @@ export default Toolbar;
 
 const Container = styled(motion.div)`
   display: flex;
+  justify-content: space-between;
   padding: 0 1rem;
   gap: 1rem;
   height: 3rem;
   background-color: var(--dark);
   box-shadow: 0 0.25rem 1rem #000;
+`;
+
+const CountryCount = styled.div`
+  display: flex;
+  align-items: center;
 `;
