@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../button/button';
 
@@ -18,28 +19,36 @@ export interface DifficultyProps {
 }
 
 export function Difficulty(props: DifficultyProps) {
+  const [settings, setSettings] = useState(props.settings);
+
   const setMode = (mode: 'countries' | 'flags') => {
-    props.onDifficultyChange({
+    const newSettings: DifficultySetting = {
       gameMode: mode,
       difficulty: props.settings.difficulty,
-    });
+    };
+
+    setSettings(newSettings);
+    props.onDifficultyChange(newSettings);
   };
 
   const setDifficulty = (difficulty: DifficultyLevel) => {
-    props.onDifficultyChange({
+    const newSettings: DifficultySetting = {
       difficulty,
       gameMode: props.settings.gameMode,
-    });
+    };
+
+    setSettings(newSettings);
+    props.onDifficultyChange(newSettings);
   };
 
   return (
     <Container>
       <Group>
         <GroupedButton active={props.settings.gameMode === 'countries'} onClick={() => setMode('countries')}>
-          Countries
+          Choices
         </GroupedButton>
         <GroupedButton active={props.settings.gameMode === 'flags'} onClick={() => setMode('flags')}>
-          Flags
+          Find
         </GroupedButton>
       </Group>
       <Group>
@@ -62,6 +71,15 @@ export function Difficulty(props: DifficultyProps) {
           Hard
         </GroupedButton>
       </Group>
+      {settings.gameMode === 'countries' && (
+        <p>
+          Choices: You will be shown a country on the map and you have to guess the correct one from the four choices.
+        </p>
+      )}
+      {settings.gameMode === 'flags' && <p>Find: You will have to find the country by clicking on the map.</p>}
+      {settings.difficulty === DifficultyLevel.EASY && <p>Easy: Only large and populous countries.</p>}
+      {settings.difficulty === DifficultyLevel.NORMAL && <p>Normal: Only countries over 100,000 in population.</p>}
+      {settings.difficulty === DifficultyLevel.HARD && <p>Hard: All countries and only the flag is shown.</p>}
     </Container>
   );
 }
@@ -81,6 +99,7 @@ const Group = styled.div`
 
 const GroupedButton = styled(Button)`
   width: 15ch;
+
   &:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -88,5 +107,9 @@ const GroupedButton = styled(Button)`
   &:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  @media (max-width: 700px) {
+    width: 13ch;
   }
 `;

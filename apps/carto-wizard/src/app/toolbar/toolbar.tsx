@@ -8,6 +8,7 @@ export interface ToolbarProps {
   totalCountries?: number;
   guessedCountries?: number;
   score?: number;
+  bonusScore?: number;
 }
 
 export function Toolbar(props: ToolbarProps) {
@@ -18,7 +19,7 @@ export function Toolbar(props: ToolbarProps) {
       exit={{ transform: 'translateY(-4rem)' }}
     >
       <Brand />
-      {props.score != null && <Score value={props.score} />}
+      {props.score != null && <Score value={props.score} bonus={props.bonusScore ?? 0} />}
       {props.guessedCountries != null && props.totalCountries != null && (
         <CountryCount>
           {props.guessedCountries} / {props.totalCountries}

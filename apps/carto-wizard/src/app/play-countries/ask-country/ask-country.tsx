@@ -13,6 +13,8 @@ export interface AskCountryProps {
   answer: Country;
   choices: Country[];
   hideName: boolean;
+  maxBonus: number;
+  onBonusScore: (bonus: number) => void;
   onCorrectAnswer: (attempts: number) => void;
 }
 
@@ -41,6 +43,23 @@ export function AskCountry(props: AskCountryProps) {
         setAttempts((oldValue) => {
           return oldValue + 1;
         });
+
+        let score: number;
+        switch (attempts + 1) {
+          case 1:
+            score = props.maxBonus;
+            break;
+          case 2:
+            score = props.maxBonus / 2;
+            break;
+          case 3:
+            score = props.maxBonus / 4;
+            break;
+          default:
+            score = 0;
+        }
+
+        props.onBonusScore(score);
       }
 
       setChoices([...choices]);

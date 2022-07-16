@@ -14,12 +14,13 @@ import AskCountry from './ask-country/ask-country';
 export interface PlayCountriesProps {}
 
 export function PlayCountries(props: PlayCountriesProps) {
+  const maxBonus = 100;
   const settings = useRecoilValue(difficultySettingsState);
 
   const { gameMap } = useMap();
 
   const [attempts, setAttempts] = useState(0);
-
+  const [bonusScore, setBonusScore] = useState(0);
   const countries = useCountries(settings.difficulty);
   const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
 
@@ -68,6 +69,7 @@ export function PlayCountries(props: PlayCountriesProps) {
       }
 
       setFinished(false);
+      setBonusScore(maxBonus);
       setAnswer((oldAnswer) => {
         if (oldAnswer) {
           gameMap.setFeatureState(
@@ -117,35 +119,35 @@ export function PlayCountries(props: PlayCountriesProps) {
 
   const onCorrectAnswer = (newAttempts: number) => {
     setScore((oldValue) => {
-      let score = 0;
-      switch (newAttempts) {
-        case 1:
-          score = 100;
-          break;
-        case 2:
-          score = 50;
-          break;
-        case 3:
-          score = 25;
-          break;
-        default:
-          score = 0;
-      }
-      return oldValue + score;
+      return oldValue + bonusScore;
     });
+    setBonusScore(0);
+
     setGuessedCountries((oldValue) => {
       return [...oldValue, answer as Country];
     });
+
     setFinished(true);
     setAttempts(newAttempts);
   };
 
+  const onBonusScore = (b: number) => {
+    setBonusScore(b);
+  };
+
   return (
     <>
-      <Toolbar score={score} totalCountries={countries?.length ?? 0} guessedCountries={guessedCountries.length + 1} />
+      <Toolbar
+        score={score}
+        bonusScore={bonusScore}
+        totalCountries={countries?.length ?? 0}
+        guessedCountries={guessedCountries.length + 1}
+      />
       {answer !== null && choices !== null && (
         <AskCountry
           hideName={settings?.difficulty === DifficultyLevel.HARD}
+          maxBonus={maxBonus}
+          onBonusScore={(b) => onBonusScore(b)}
           onCorrectAnswer={onCorrectAnswer}
           answer={answer}
           choices={choices}
@@ -165,7 +167,7 @@ export function PlayCountries(props: PlayCountriesProps) {
         <Modal>
           <p>Congratulations!</p>
           <p>
-            You scored <FinalScore>{score}</FinalScore> on a maximum of {countries.length * 100}.
+            You scored <FinalScore>{score}</FinalScore> on a maximum of {countries.length * maxBonus}.
           </p>
           <Button to="/">Home</Button>
         </Modal>
