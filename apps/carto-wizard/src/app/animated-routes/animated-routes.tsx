@@ -1,13 +1,9 @@
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import PlayCountries from '../play-countries/play-countries';
-import PlayFlags from '../play-flags/play-flags';
+import { PlayFind } from '../play-find/play-find';
+import { PlayGuess } from '../play-guess';
 import Select from '../select/select';
 import Welcome from '../welcome/welcome';
-
-export type PlayParams = {
-  mode: 'countries' | 'flags';
-};
 
 /* eslint-disable-next-line */
 export interface AnimatedRoutesProps {}
@@ -20,8 +16,8 @@ export function AnimatedRoutes(props: AnimatedRoutesProps) {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Welcome />} />
         <Route path="/select" element={<Select />} />
-        <Route path="/play/countries" element={<PlayCountries />} />
-        <Route path="/play/flags" element={<PlayFlags />} />
+        <Route path="/play/guess" element={<PlayGuess />} />
+        <Route path="/play/find" element={<PlayFind />} />
       </Routes>
     </AnimatePresence>
   );

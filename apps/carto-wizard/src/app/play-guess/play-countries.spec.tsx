@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import PlayCountries from './play-countries';
+import { PlayGuess } from './play-guess';
 
 describe('PlayCountries', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<PlayCountries />);
+    const { baseElement } = render(<PlayGuess />);
     expect(baseElement).toBeTruthy();
   });
 });

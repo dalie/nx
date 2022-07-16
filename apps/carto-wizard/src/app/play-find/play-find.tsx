@@ -9,9 +9,9 @@ import useCountries from '../use-countries/use-countries';
 import AskFlag from './ask-flag/ask-flag';
 
 /* eslint-disable-next-line */
-export interface PlayFlagsProps {}
+export interface PlayFindProps {}
 
-export function PlayFlags(props: PlayFlagsProps) {
+export function PlayFind(props: PlayFindProps) {
   const { gameMap } = useMap();
 
   const settings = useRecoilValue(difficultySettingsState);
@@ -92,5 +92,3 @@ export function PlayFlags(props: PlayFlagsProps) {
     </>
   );
 }
-
-export default PlayFlags;

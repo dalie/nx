@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import PlayFlags from './play-flags';
+import { PlayFind } from './play-find';
 
-describe('PlayFlags', () => {
+describe('PlayFind', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<PlayFlags />);
+    const { baseElement } = render(<PlayFind />);
     expect(baseElement).toBeTruthy();
   });
 });

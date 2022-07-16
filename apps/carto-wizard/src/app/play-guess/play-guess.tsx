@@ -11,9 +11,9 @@ import useCountries from '../use-countries/use-countries';
 import AskCountry from './ask-country/ask-country';
 
 /* eslint-disable-next-line */
-export interface PlayCountriesProps {}
+export interface PlayGuessProps {}
 
-export function PlayCountries(props: PlayCountriesProps) {
+export function PlayGuess(props: PlayGuessProps) {
   const maxBonus = 100;
   const settings = useRecoilValue(difficultySettingsState);
 
@@ -175,8 +175,6 @@ export function PlayCountries(props: PlayCountriesProps) {
     </>
   );
 }
-
-export default PlayCountries;
 
 const FinalScore = styled.span`
   font-size: 4rem;

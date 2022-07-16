@@ -2,13 +2,17 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../button/button';
 
+export enum GameMode {
+  FIND,
+  GUESS,
+}
 export enum DifficultyLevel {
   EASY,
   NORMAL,
   HARD,
 }
 export interface DifficultySetting {
-  gameMode: 'countries' | 'flags';
+  gameMode: GameMode;
   difficulty: DifficultyLevel;
 }
 
@@ -21,7 +25,7 @@ export interface DifficultyProps {
 export function Difficulty(props: DifficultyProps) {
   const [settings, setSettings] = useState(props.settings);
 
-  const setMode = (mode: 'countries' | 'flags') => {
+  const setMode = (mode: GameMode) => {
     const newSettings: DifficultySetting = {
       gameMode: mode,
       difficulty: props.settings.difficulty,
@@ -44,10 +48,10 @@ export function Difficulty(props: DifficultyProps) {
   return (
     <Container>
       <Group>
-        <GroupedButton active={props.settings.gameMode === 'countries'} onClick={() => setMode('countries')}>
+        <GroupedButton active={props.settings.gameMode === GameMode.GUESS} onClick={() => setMode(GameMode.GUESS)}>
           Choices
         </GroupedButton>
-        <GroupedButton active={props.settings.gameMode === 'flags'} onClick={() => setMode('flags')}>
+        <GroupedButton active={props.settings.gameMode === GameMode.FIND} onClick={() => setMode(GameMode.FIND)}>
           Find
         </GroupedButton>
       </Group>
@@ -71,12 +75,12 @@ export function Difficulty(props: DifficultyProps) {
           Hard
         </GroupedButton>
       </Group>
-      {settings.gameMode === 'countries' && (
+      {settings.gameMode === GameMode.GUESS && (
         <p>
-          Choices: You will be shown a country on the map and you have to guess the correct one from the four choices.
+          Guess: You will be shown a country on the map and you have to guess the correct one from the four choices.
         </p>
       )}
-      {settings.gameMode === 'flags' && <p>Find: You will have to find the country by clicking on the map.</p>}
+      {settings.gameMode === GameMode.FIND && <p>Find: You will have to find the country by clicking on the map.</p>}
       {settings.difficulty === DifficultyLevel.EASY && <p>Easy: Only large and populous countries.</p>}
       {settings.difficulty === DifficultyLevel.NORMAL && <p>Normal: Only countries over 100,000 in population.</p>}
       {settings.difficulty === DifficultyLevel.HARD && <p>Hard: All countries and only the flag is shown.</p>}
