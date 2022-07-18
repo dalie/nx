@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { countriesState, Country } from '../app.state';
 import { DifficultyLevel } from '../difficulty/difficulty';
 
-export function useCountries(difficulty: DifficultyLevel): Country[] {
+export function useCountries(difficulty: DifficultyLevel, count: number | null = null): Country[] {
   const countries = useRecoilValue(countriesState);
 
   return useMemo(() => {
@@ -21,8 +21,8 @@ export function useCountries(difficulty: DifficultyLevel): Country[] {
         break;
     }
 
-    return filteredCountries;
-  }, [difficulty, countries]);
+    return count ? filteredCountries.slice(0, count) : filteredCountries;
+  }, [difficulty, count, countries]);
 }
 
 export default useCountries;

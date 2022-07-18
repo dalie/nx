@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useMap } from 'react-map-gl';
+import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Country, difficultySettingsState } from '../app.state';
 import Button from '../button/button';
@@ -12,11 +11,9 @@ import AskFlag from './ask-flag/ask-flag';
 export interface PlayFindProps {}
 
 export function PlayFind(props: PlayFindProps) {
-  const { gameMap } = useMap();
-
   const settings = useRecoilValue(difficultySettingsState);
 
-  const countries = useCountries(settings.difficulty);
+  const countries = useCountries(settings.difficulty, settings.countryCount);
 
   const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
 

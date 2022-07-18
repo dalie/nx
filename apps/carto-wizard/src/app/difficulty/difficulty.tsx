@@ -94,7 +94,7 @@ export function Difficulty(props: DifficultyProps) {
       </Group>
       <Group>
         {countryCountOptions.map((o) => (
-          <SmallGroupedButton active={props.settings.countryCount === o} onClick={() => setCountryCount(o)}>
+          <SmallGroupedButton key={o} active={props.settings.countryCount === o} onClick={() => setCountryCount(o)}>
             {o ?? 'All'}
           </SmallGroupedButton>
         ))}

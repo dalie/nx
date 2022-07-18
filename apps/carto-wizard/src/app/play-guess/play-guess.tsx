@@ -21,7 +21,9 @@ export function PlayGuess(props: PlayGuessProps) {
 
   const [attempts, setAttempts] = useState(0);
   const [bonusScore, setBonusScore] = useState(0);
-  const countries = useCountries(settings.difficulty);
+
+  const allCountries = useCountries(settings.difficulty);
+  const [countryList, setCountryList] = useState<Country[]>([]);
   const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
 
   const [score, setScore] = useState(0);
@@ -29,18 +31,22 @@ export function PlayGuess(props: PlayGuessProps) {
   const [finished, setFinished] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
+  useEffect(() => {
+    setCountryList(settings.countryCount ? allCountries.slice(0, settings.countryCount) : allCountries);
+  }, [allCountries, settings.countryCount]);
+
   const choices = useMemo<Country[]>(() => {
-    if (!countries?.length || !answer) {
+    if (!allCountries?.length || !answer) {
       return [];
     }
 
     if (settings?.difficulty === DifficultyLevel.NORMAL || settings?.difficulty === DifficultyLevel.HARD) {
       if (answer.borders?.length) {
-        const borderingCountries = countries.filter((c) => answer.borders.includes(c.code3));
+        const borderingCountries = allCountries.filter((c) => answer.borders.includes(c.code3));
 
         if (borderingCountries.length < 3) {
           borderingCountries.push(
-            ...countries
+            ...allCountries
               .filter((c) => c.id !== answer.id && !answer.borders.includes(c.code3))
               .sort(() => 0.5 - Math.random())
           );
@@ -53,15 +59,15 @@ export function PlayGuess(props: PlayGuessProps) {
       }
     }
 
-    const randomCountries = countries
+    const randomCountries = allCountries
       .filter((c) => c.id !== answer.id && c.borders?.length <= 0)
       .sort(() => 0.5 - Math.random());
     return randomCountries.slice(0, 3);
-  }, [countries, answer, settings]);
+  }, [allCountries, answer, settings]);
 
   const nextAnswer = useCallback(() => {
-    if (countries?.length && gameMap) {
-      const filteredCountries = countries.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
+    if (countryList?.length && gameMap) {
+      const filteredCountries = countryList.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
       const country = filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
       if (!country) {
         setGameOver(true);
@@ -81,11 +87,11 @@ export function PlayGuess(props: PlayGuessProps) {
         return country;
       });
     }
-  }, [countries, gameMap, guessedCountries]);
+  }, [countryList, gameMap, guessedCountries]);
 
   useEffect(() => {
     nextAnswer();
-  }, [countries]);
+  }, [countryList]);
 
   const onCorrectAnswer = (newAttempts: number) => {
     setScore((oldValue) => {
@@ -110,7 +116,7 @@ export function PlayGuess(props: PlayGuessProps) {
       <Toolbar
         score={score}
         bonusScore={bonusScore}
-        totalCountries={countries?.length ?? 0}
+        totalCountries={countryList?.length ?? 0}
         guessedCountries={guessedCountries.length + 1}
       />
       {answer !== null && choices !== null && (
@@ -138,7 +144,7 @@ export function PlayGuess(props: PlayGuessProps) {
         <Modal>
           <p>Congratulations!</p>
           <p>
-            You scored <FinalScore>{score}</FinalScore> on a maximum of {countries.length * maxBonus}.
+            You scored <FinalScore>{score}</FinalScore> on a maximum of {countryList.length * maxBonus}.
           </p>
           <Button to="/">Home</Button>
         </Modal>
