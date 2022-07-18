@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { difficultySettingsState } from '../app.state';
 import Button from '../button/button';
-import Difficulty, { DifficultySetting } from '../difficulty/difficulty';
+import Difficulty, { DifficultySetting, GameMode } from '../difficulty/difficulty';
 import Modal from '../modal/modal';
 
 /* eslint-disable-next-line */
@@ -20,7 +20,7 @@ export function Welcome(props: WelcomeProps) {
       <Container>
         <h1>CartoWizard</h1>
         <Difficulty settings={difficultySettings as DifficultySetting} onDifficultyChange={onDifficultyChange} />
-        <Button to={`/play/${difficultySettings?.gameMode}`}>Start</Button>
+        <Button to={`/play/${difficultySettings.gameMode === GameMode.FIND ? 'find' : 'guess'}`}>Start</Button>
       </Container>
     </Modal>
   );

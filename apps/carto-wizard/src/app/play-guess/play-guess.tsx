@@ -87,36 +87,6 @@ export function PlayGuess(props: PlayGuessProps) {
     nextAnswer();
   }, [countries]);
 
-  useEffect(() => {
-    if (answer && gameMap) {
-      gameMap.fitBounds([answer.bounds.sw, answer.bounds.ne], {
-        duration: 2000,
-        padding: {
-          bottom: 300,
-          left: 150,
-          right: 150,
-          top: 150,
-        },
-      });
-
-      setTimeout(() => {
-        gameMap.setFeatureState(
-          { id: answer.id, source: 'countries_source', sourceLayer: 'processed' },
-          { hover: true }
-        );
-      }, 1750);
-    }
-
-    return () => {
-      if (gameMap && answer) {
-        gameMap.setFeatureState(
-          { id: answer.id, source: 'countries_source', sourceLayer: 'processed' },
-          { hover: false }
-        );
-      }
-    };
-  }, [answer, gameMap]);
-
   const onCorrectAnswer = (newAttempts: number) => {
     setScore((oldValue) => {
       return oldValue + bonusScore;
@@ -147,6 +117,7 @@ export function PlayGuess(props: PlayGuessProps) {
         <AskCountry
           hideName={settings?.difficulty === DifficultyLevel.HARD}
           maxBonus={maxBonus}
+          hardBonus={settings.difficulty === DifficultyLevel.HARD}
           onBonusScore={(b) => onBonusScore(b)}
           onCorrectAnswer={onCorrectAnswer}
           answer={answer}
