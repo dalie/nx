@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { MapMouseEvent } from 'mapbox-gl';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMap } from 'react-map-gl';
 import styled from 'styled-components';
 import { Country } from '../../app.state';
@@ -26,28 +25,6 @@ export function AskCountry(props: AskCountryProps) {
 
   const [choices, setChoices] = useState<Choice[]>([]);
   const [attempts, setAttempts] = useState(1);
-  const bonusPoints = useRef(props.maxBonus);
-  const previousZoom = useRef(0);
-  const onZoomEnd = useRef<((event: MapMouseEvent) => void) | null>(null);
-
-  useEffect(() => {
-    onZoomEnd.current = (event: MapMouseEvent) => {
-      if (event.originalEvent && gameMap) {
-        const diff = previousZoom.current - gameMap.getZoom();
-        if (diff > 0.1 && bonusPoints.current > props.maxBonus / 2) {
-          const newBonus = bonusPoints.current - props.maxBonus / 4;
-          bonusPoints.current = newBonus;
-
-          props.onBonusScore(newBonus);
-          console.log('zoomed out!');
-        }
-      }
-    };
-
-    return function cleanup() {
-      gameMap?.off('zoomend', onZoomEnd.current as any);
-    };
-  }, [props.maxBonus, props.onBonusScore, gameMap]);
 
   useEffect(() => {
     setChoices(
@@ -65,24 +42,6 @@ export function AskCountry(props: AskCountryProps) {
           top: 150,
         },
       });
-      gameMap.once('moveend', () => {
-        previousZoom.current = gameMap.getZoom();
-        gameMap.on('zoomend', onZoomEnd.current as any);
-      });
-      gameMap.on('zoomend', onZoomEnd.current as any);
-      // if (props.hardBonus) {
-      //   gameMap.once('moveend', () => {
-      //     const origialZoom = gameMap.getZoom();
-
-      //     gameMap.on('zoomend', (e) => {
-      //       const diff = origialZoom - gameMap.getZoom();
-
-      //       if (diff > 0.5 && bonusPoints > props.maxBonus / 2) {
-      //         setBonusPoints((oldValue) => oldValue - props.maxBonus / 4);
-      //       }
-      //     });
-      //   });
-      // }
 
       setTimeout(() => {
         gameMap.setFeatureState(
@@ -93,7 +52,6 @@ export function AskCountry(props: AskCountryProps) {
     }
 
     return () => {
-      gameMap?.off('zoomend', onZoomEnd.current as any);
       if (gameMap && props.answer) {
         gameMap.setFeatureState(
           { id: props.answer.id, source: 'countries_source', sourceLayer: 'processed' },

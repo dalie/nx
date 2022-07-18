@@ -12,6 +12,7 @@ export enum DifficultyLevel {
   HARD,
 }
 export interface DifficultySetting {
+  countryCount: number | null;
   gameMode: GameMode;
   difficulty: DifficultyLevel;
 }
@@ -28,6 +29,7 @@ export function Difficulty(props: DifficultyProps) {
   const setMode = (mode: GameMode) => {
     const newSettings: DifficultySetting = {
       gameMode: mode,
+      countryCount: props.settings.countryCount,
       difficulty: props.settings.difficulty,
     };
 
@@ -38,12 +40,27 @@ export function Difficulty(props: DifficultyProps) {
   const setDifficulty = (difficulty: DifficultyLevel) => {
     const newSettings: DifficultySetting = {
       difficulty,
+      countryCount: props.settings.countryCount,
+      gameMode: props.settings.gameMode,
+    };
+
+    setSettings(newSettings);
+
+    props.onDifficultyChange(newSettings);
+  };
+
+  const setCountryCount = (value: number | null) => {
+    const newSettings: DifficultySetting = {
+      countryCount: value,
+      difficulty: props.settings.difficulty,
       gameMode: props.settings.gameMode,
     };
 
     setSettings(newSettings);
     props.onDifficultyChange(newSettings);
   };
+
+  const countryCountOptions = [5, 10, 50, null];
 
   return (
     <Container>
@@ -74,6 +91,13 @@ export function Difficulty(props: DifficultyProps) {
         >
           Hard
         </GroupedButton>
+      </Group>
+      <Group>
+        {countryCountOptions.map((o) => (
+          <SmallGroupedButton active={props.settings.countryCount === o} onClick={() => setCountryCount(o)}>
+            {o ?? 'All'}
+          </SmallGroupedButton>
+        ))}
       </Group>
       {settings.gameMode === GameMode.GUESS && (
         <p>
@@ -116,4 +140,8 @@ const GroupedButton = styled(Button)`
   @media (max-width: 700px) {
     width: 13ch;
   }
+`;
+
+const SmallGroupedButton = styled(GroupedButton)`
+  width: 7ch;
 `;

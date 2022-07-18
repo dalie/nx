@@ -1,14 +1,46 @@
 import { MapboxEvent, MapboxGeoJSONFeature, MapLayerMouseEvent, MapMouseEvent } from 'mapbox-gl';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MapGl, { Layer, LayerProps, Source } from 'react-map-gl';
+import { useRecoilValue } from 'recoil';
+import { difficultySettingsState } from '../app.state';
+import { DifficultyLevel, GameMode } from '../difficulty/difficulty';
 
+interface MapInteractivitySettings {
+  boxZoom?: boolean;
+  doubleClickZoom?: boolean;
+  dragRotate?: boolean;
+  dragPan?: boolean;
+  keyboard?: boolean;
+  scrollZoom?: boolean;
+  touchPitch?: boolean;
+  touchZoomRotate?: boolean;
+}
 /* eslint-disable-next-line */
 export interface MapProps {
   location: [number, number];
 }
 
 export function Map(props: MapProps) {
+  const gameSettings = useRecoilValue(difficultySettingsState);
   const [hoveredFeature, setHoveredFeature] = useState<MapboxGeoJSONFeature | null>(null);
+  const [mapSettings, setMapSettings] = useState<MapInteractivitySettings>({});
+
+  useEffect(() => {
+    if (gameSettings.gameMode === GameMode.GUESS && gameSettings.difficulty === DifficultyLevel.HARD) {
+      setMapSettings({
+        boxZoom: false,
+        doubleClickZoom: false,
+        dragRotate: false,
+        dragPan: false,
+        keyboard: false,
+        scrollZoom: false,
+        touchPitch: false,
+        touchZoomRotate: false,
+      });
+    } else {
+      setMapSettings({});
+    }
+  }, [gameSettings]);
 
   const onMapLoad = (e: MapboxEvent) => {
     e.target.setFog({});
@@ -63,9 +95,9 @@ export function Map(props: MapProps) {
       onLoad={onMapLoad}
       onClick={onMapClick}
       maxPitch={0}
-      dragRotate={false}
       //onMouseMove={onMapMouseMove}
       //onMouseOut={() => setHoveredFeature(null)}
+      {...mapSettings}
     >
       <Source id="countries_source" type="vector" url="mapbox://dominicalie.6qx7hy0c">
         <Layer {...layerStyles} />

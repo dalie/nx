@@ -25,6 +25,7 @@ interface AppState {
 const defaultState: AppState = {
   countries: [],
   difficultySettings: {
+    countryCount: 25,
     difficulty: DifficultyLevel.NORMAL,
     gameMode: GameMode.GUESS,
   },

@@ -7,15 +7,21 @@ export function useCountries(difficulty: DifficultyLevel): Country[] {
   const countries = useRecoilValue(countriesState);
 
   return useMemo(() => {
+    let filteredCountries: Country[];
+
     switch (difficulty) {
       case DifficultyLevel.EASY:
-        return countries?.filter((c) => c.area > 100000 && c.population > 1000000);
+        filteredCountries = countries?.filter((c) => c.area > 100000 && c.population > 1000000);
+        break;
       case DifficultyLevel.NORMAL:
-        return countries?.filter((c) => c.population > 100000);
-
+        filteredCountries = countries?.filter((c) => c.population > 100000);
+        break;
       case DifficultyLevel.HARD:
-        return countries;
+        filteredCountries = countries;
+        break;
     }
+
+    return filteredCountries;
   }, [difficulty, countries]);
 }
 
