@@ -32,7 +32,11 @@ export function PlayGuess(props: PlayGuessProps) {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    setCountryList(settings.countryCount ? allCountries.slice(0, settings.countryCount) : allCountries);
+    setCountryList(
+      settings.countryCount
+        ? allCountries.sort(() => 0.5 - Math.random()).slice(0, settings.countryCount)
+        : allCountries
+    );
   }, [allCountries, settings.countryCount]);
 
   const choices = useMemo<Country[]>(() => {

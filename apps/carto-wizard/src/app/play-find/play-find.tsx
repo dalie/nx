@@ -13,7 +13,7 @@ export interface PlayFindProps {}
 export function PlayFind(props: PlayFindProps) {
   const settings = useRecoilValue(difficultySettingsState);
 
-  const countries = useCountries(settings.difficulty, settings.countryCount);
+  const countries = useCountries(settings.difficulty);
 
   const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
 
@@ -28,14 +28,14 @@ export function PlayFind(props: PlayFindProps) {
       const filteredCountries = countries.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
       const country = filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
 
-      if (!country) {
+      if (!country || (settings.countryCount && guessedCountries.length > settings.countryCount)) {
         setGameOver(true);
       }
       setFinished(false);
       setGiveUp(false);
       setAnswer(country);
     }
-  }, [countries, guessedCountries]);
+  }, [countries, settings.countryCount, guessedCountries]);
 
   if (!answer && !gameOver) {
     nextAnswer();
