@@ -148,7 +148,10 @@ export function PlayGuess(props: PlayGuessProps) {
         <Modal>
           <p>Congratulations!</p>
           <p>
-            You scored <FinalScore>{score}</FinalScore> on a maximum of {countryList.length * maxBonus}.
+            <FinalScore>{(score / (countryList.length * maxBonus)) * 100}%</FinalScore>
+          </p>
+          <p>
+            You scored {score} on a maximum of {countryList.length * maxBonus}.
           </p>
           <Button to="/">Home</Button>
         </Modal>
