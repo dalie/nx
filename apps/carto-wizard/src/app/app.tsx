@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { MapProvider } from 'react-map-gl';
 import { BrowserRouter } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { environment } from '../environments/environment';
 import AnimatedRoutes from './animated-routes/animated-routes';
 import { countriesState, Country } from './app.state';
 import { COUNTRIES_API_URL } from './contants';
@@ -103,7 +104,7 @@ export function App() {
   }, [countries, setCountries]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={environment.baseUrl}>
       <MapProvider>
         <Map location={[0, 0]} />
         <Ui>

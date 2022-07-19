@@ -34,7 +34,7 @@ export function PlayGuess(props: PlayGuessProps) {
   useEffect(() => {
     setCountryList(
       settings.countryCount
-        ? allCountries.sort(() => 0.5 - Math.random()).slice(0, settings.countryCount)
+        ? [...allCountries].sort(() => 0.5 - Math.random()).slice(0, settings.countryCount)
         : allCountries
     );
   }, [allCountries, settings.countryCount]);
