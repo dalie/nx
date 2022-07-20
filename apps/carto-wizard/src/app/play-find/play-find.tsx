@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Country, difficultySettingsState } from '../app.state';
 import Button from '../button/button';
 import Modal from '../modal/modal';
+import { AnswerStat, useStats } from '../stats/use-stats';
 import Toolbar from '../toolbar/toolbar';
 import useCountries from '../use-countries/use-countries';
 import AskFlag from './ask-flag/ask-flag';
@@ -14,8 +15,8 @@ export function PlayFind(props: PlayFindProps) {
   const settings = useRecoilValue(difficultySettingsState);
 
   const countries = useCountries(settings.difficulty);
-
-  const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
+  const [stats, addStat] = useStats();
+  const [guessedAnswers, setGuessedAnswers] = useState<AnswerStat[]>([]);
 
   const [answer, setAnswer] = useState<Country | null>(null);
   const [gameOver, setGameOver] = useState(false);
@@ -25,25 +26,30 @@ export function PlayFind(props: PlayFindProps) {
 
   const nextAnswer = useCallback(() => {
     if (countries?.length) {
-      const filteredCountries = countries.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
+      const filteredCountries = countries.filter((c) => !guessedAnswers.map((g) => g[0]).includes(c.id));
       const country = filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
 
-      if (!country || (settings.countryCount && guessedCountries.length > settings.countryCount)) {
+      if (!country || (settings.countryCount && guessedAnswers.length > settings.countryCount)) {
         setGameOver(true);
+        addStat({
+          answers: guessedAnswers,
+          difficulty: settings.difficulty,
+          mode: settings.gameMode,
+        });
       }
       setFinished(false);
       setGiveUp(false);
       setAnswer(country);
     }
-  }, [countries, settings.countryCount, guessedCountries]);
+  }, [countries, settings, guessedAnswers, addStat]);
 
   if (!answer && !gameOver) {
     nextAnswer();
   }
 
   const onCorrectAnswer = (newAttempts: number) => {
-    setGuessedCountries((oldValue) => {
-      return [...oldValue, answer as Country];
+    setGuessedAnswers((oldValue) => {
+      return [...oldValue, [answer?.id as number | string, newAttempts]];
     });
     setFinished(true);
     setAttempts(newAttempts);
@@ -55,7 +61,7 @@ export function PlayFind(props: PlayFindProps) {
   };
   return (
     <>
-      <Toolbar guessedCountries={guessedCountries.length + 1} totalCountries={countries.length} />
+      <Toolbar guessedCountries={guessedAnswers.length + 1} totalCountries={countries.length} />
       {answer && !finished && <AskFlag onGiveUp={onGiveUp} onCorrectAnswer={onCorrectAnswer} answer={answer} />}
 
       {finished && (

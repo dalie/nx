@@ -6,6 +6,7 @@ import { Country, difficultySettingsState } from '../app.state';
 import Button from '../button/button';
 import { DifficultyLevel } from '../difficulty/difficulty';
 import Modal from '../modal/modal';
+import { AnswerStat, useStats } from '../stats/use-stats';
 import Toolbar from '../toolbar/toolbar';
 import useCountries from '../use-countries/use-countries';
 import AskCountry from './ask-country/ask-country';
@@ -21,11 +22,10 @@ export function PlayGuess(props: PlayGuessProps) {
 
   const [attempts, setAttempts] = useState(0);
   const [bonusScore, setBonusScore] = useState(0);
-
+  const [stats, addStat] = useStats();
   const allCountries = useCountries(settings.difficulty);
   const [countryList, setCountryList] = useState<Country[]>([]);
-  const [guessedCountries, setGuessedCountries] = useState<Country[]>([]);
-
+  const [guessedAnswers, setGuessedAnswers] = useState<AnswerStat[]>([]);
   const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState<Country | null>(null);
   const [finished, setFinished] = useState(false);
@@ -71,10 +71,15 @@ export function PlayGuess(props: PlayGuessProps) {
 
   const nextAnswer = useCallback(() => {
     if (countryList?.length && gameMap) {
-      const filteredCountries = countryList.filter((c) => !guessedCountries.map((g) => g.id).includes(c.id));
+      const filteredCountries = countryList.filter((c) => !guessedAnswers.map((g) => g[0]).includes(c.id));
       const country = filteredCountries[Math.floor(Math.random() * filteredCountries.length)];
       if (!country) {
         setGameOver(true);
+        addStat({
+          answers: guessedAnswers,
+          difficulty: settings.difficulty,
+          mode: settings.gameMode,
+        });
         return;
       }
 
@@ -91,7 +96,7 @@ export function PlayGuess(props: PlayGuessProps) {
         return country;
       });
     }
-  }, [countryList, gameMap, guessedCountries]);
+  }, [countryList, gameMap, guessedAnswers, addStat, settings]);
 
   useEffect(() => {
     nextAnswer();
@@ -103,8 +108,8 @@ export function PlayGuess(props: PlayGuessProps) {
     });
     setBonusScore(0);
 
-    setGuessedCountries((oldValue) => {
-      return [...oldValue, answer as Country];
+    setGuessedAnswers((oldValue) => {
+      return [...oldValue, [answer?.id as number | string, newAttempts]];
     });
 
     setFinished(true);
@@ -121,7 +126,7 @@ export function PlayGuess(props: PlayGuessProps) {
         score={score}
         bonusScore={bonusScore}
         totalCountries={countryList?.length ?? 0}
-        guessedCountries={guessedCountries.length + 1}
+        guessedCountries={guessedAnswers.length + 1}
       />
       {answer !== null && choices !== null && (
         <AskCountry

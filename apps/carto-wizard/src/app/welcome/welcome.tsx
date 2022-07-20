@@ -19,6 +19,7 @@ export function Welcome(props: WelcomeProps) {
     <Modal>
       <Container>
         <h1>CartoWizard</h1>
+        <Button to="/stats">Stats</Button>
         <Difficulty settings={difficultySettings as DifficultySetting} onDifficultyChange={onDifficultyChange} />
         <Button to={`/play/${difficultySettings.gameMode === GameMode.FIND ? 'find' : 'guess'}`}>Start</Button>
       </Container>
