@@ -8,7 +8,7 @@
     "build": "nx build",
     "build:prod": "nx build --baseHref=/nx/",
     "test": "nx test",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:prod",
     "deploy": "gh-pages -d dist/apps/carto-wizard"
   },
   "private": true,
