@@ -5,11 +5,11 @@ import { MapProvider } from 'react-map-gl';
 import { BrowserRouter } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { environment } from '../environments/environment';
-import AnimatedRoutes from './animated-routes/animated-routes';
-import { countriesState, Country } from './app.state';
-import { COUNTRIES_API_URL } from './contants';
-import Map from './map/map';
-import Ui from './ui/ui';
+import { Map, Ui } from './components';
+import { COUNTRIES_API_URL } from './constants';
+
+import { AnimatedRoutes } from './routes/animated-routes';
+import { countriesState, Country } from './store/app.state';
 
 interface FeatureProperties {
   name: string;
