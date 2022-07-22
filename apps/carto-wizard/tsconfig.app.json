@@ -2,6 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "paths": {
+      "app/*": ["apps/carto-wizard/src/app/*"]
+    },
     "types": ["node"]
   },
   "files": [
