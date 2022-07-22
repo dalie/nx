@@ -90,3 +90,5 @@ export function FindPage() {
     </>
   );
 }
+
+export default FindPage;

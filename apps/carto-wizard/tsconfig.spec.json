@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
+    "paths": {
+      "app/*": ["apps/carto-wizard/src/app/*"]
+    },
     "types": ["jest", "node"]
   },
   "include": [

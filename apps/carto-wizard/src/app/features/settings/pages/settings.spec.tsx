@@ -1,10 +1,9 @@
 import { render } from '@testing-library/react';
+import { SettingsPage } from './settings.page';
 
-import Welcome from './settings.page';
-
-describe('Welcome', () => {
+describe('SettingsPage', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Welcome />);
+    const { baseElement } = render(<SettingsPage />);
     expect(baseElement).toBeTruthy();
   });
 });

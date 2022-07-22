@@ -7,7 +7,7 @@ import { calculateStats } from '../utils';
 /* eslint-disable-next-line */
 export interface StatsProps {}
 
-export function Stats(props: StatsProps) {
+export function StatsPage(props: StatsProps) {
   const [stats] = useStats();
 
   const easyChoice = calculateStats(stats, GameMode.GUESS, DifficultyLevel.EASY);
@@ -76,7 +76,7 @@ export function Stats(props: StatsProps) {
   );
 }
 
-export default Stats;
+export default StatsPage;
 
 const StatsContainer = styled.div`
   display: flex;

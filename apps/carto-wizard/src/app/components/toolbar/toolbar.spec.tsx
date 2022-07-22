@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
-
-import Toolbar from './toolbar';
+import { Toolbar } from './toolbar';
 
 describe('Toolbar', () => {
   it('should render successfully', () => {

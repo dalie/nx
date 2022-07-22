@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Stats from './stats';
+import { StatsPage } from './stats.page';
 
-describe('Stats', () => {
+describe('StatsPage', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Stats />);
+    const { baseElement } = render(<StatsPage />);
     expect(baseElement).toBeTruthy();
   });
 });
