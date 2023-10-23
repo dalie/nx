@@ -1,10 +1,11 @@
 {
+  "name": "carto-wizard",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/carto-wizard/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/web:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
@@ -15,13 +16,10 @@
         "main": "apps/carto-wizard/src/main.tsx",
         "polyfills": "apps/carto-wizard/src/polyfills.ts",
         "tsConfig": "apps/carto-wizard/tsconfig.app.json",
-        "assets": [
-          "apps/carto-wizard/src/favicon.ico",
-          "apps/carto-wizard/src/assets"
-        ],
+        "assets": ["apps/carto-wizard/src/favicon.ico", "apps/carto-wizard/src/assets"],
         "styles": ["apps/carto-wizard/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "@nx/react/plugins/webpack"
       },
       "configurations": {
         "development": {
@@ -47,7 +45,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/web:dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "carto-wizard:build",
@@ -64,15 +62,15 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/carto-wizard/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/carto-wizard"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/carto-wizard"],
       "options": {
         "jestConfig": "apps/carto-wizard/jest.config.ts",
         "passWithNoTests": true

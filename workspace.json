@@ -1,8 +1,0 @@
-{
-  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
-  "version": 2,
-  "projects": {
-    "carto-wizard": "apps/carto-wizard",
-    "carto-wizard-e2e": "apps/carto-wizard-e2e"
-  }
-}
