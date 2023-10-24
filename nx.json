@@ -27,6 +27,7 @@
       "application": {
         "style": "scss",
         "linter": "eslint",
+        "bundler": "vite",
         "babel": true
       },
       "component": {
